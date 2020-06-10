@@ -1,7 +1,7 @@
 # avs4000-docker
 ## Description
 
-This is a quick and dirty container for building a docker container that supports the avs4000d device.
+This is a quick and dirty project for building a docker container that supports the avs4000d device.
 
 ## Prereqs:
 
