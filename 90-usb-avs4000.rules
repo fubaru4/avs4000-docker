@@ -1,0 +1,4 @@
+#!/bin/bash
+## This file should be copied to /etc/udev/rules.d/
+## Cypress USB vendor ID = 0x04b4
+SUBSYSTEM=="usb", ATTR{idVendor}=="04b4", MODE="666"

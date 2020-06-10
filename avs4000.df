@@ -1,0 +1,22 @@
+FROM ubuntu:18.04
+
+USER root
+
+RUN apt-get update && \
+    apt-get -y install wget 
+
+RUN apt-get -y install gnupg gnupg2
+
+RUN wget -O - http://repo.avid-systems.com/site.gpg.key | apt-key add -
+
+RUN echo "deb [arch=amd64] http://repo.avid-systems.com/ bionic main" >> /etc/apt/sources.list
+
+RUN apt-get update && apt-get install -y avs4000 gr-avs4000
+
+RUN apt-get -y install apt-utils
+
+RUN apt-get -y install usbutils pciutils
+
+COPY utilities utilities/
+
+CMD /bin/bash
