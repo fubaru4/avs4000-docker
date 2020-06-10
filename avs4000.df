@@ -1,6 +1,10 @@
 FROM ubuntu:18.04
 
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=America/New_York
+
 USER root
+
 
 RUN apt-get update && \
     apt-get -y install wget 
@@ -17,6 +21,20 @@ RUN apt-get -y install apt-utils
 
 RUN apt-get -y install usbutils pciutils
 
+RUN apt-get -y remove avs4000 libavs4000
+
+RUN apt-get update
+
+RUN apt-get -y install avs4000
+
+RUN apt-get -y install socat
+
+RUN apt-get -y install vim vim-gtk
+
 COPY utilities utilities/
+
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN apt-get -y install xterm
 
 CMD /bin/bash

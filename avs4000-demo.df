@@ -1,0 +1,9 @@
+FROM avid/avs4000:1.0
+
+RUN apt-get -y install gnuradio
+
+COPY demo demo/
+
+RUN apt-get -y install net-tools
+
+CMD /bin/bash
