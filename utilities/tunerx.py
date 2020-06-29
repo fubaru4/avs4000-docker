@@ -17,25 +17,25 @@ P={};                    # Set REQ Map
 RX={};                   # RX Group Map
 RXD={};                  # RXDATA Group Map
 RX["sampleRate"]=20e6    # RX Sample Rate
-RXD["conEnable"]=True;   # enable RX Data Connection
+RXD["conEnable"]=False;   # enable RX Data Connection
 RXD["conType"]="tcp";    # Specify to use TCP
 RXD["conPort"]=RX_PORT;  # Specify TCP Port to listen on
 RXD["useV49"]=False;     # Receive Raw IQ Data
-RXD["run"]=True;         # Start the stream
+RXD["run"]=False;         # Start the stream
 P["rx"]=RX;              # Add RX Group Map to REQ
 P["rxdata"]=RXD;         # Add RXDATA Group Map to REQ
 
 REQ=['set',P];           # Create REQ for SET Command
 
-the_temp = json.loads(REQ)
-print("sending {}".format(json.dumps(the_temp),indent=2))
+print("sending {}".format(json.dumps(REQ),indent=2))
 
-sock.send(json.dumps(REQ)); # Convert REQ to JSON and send on socket
-str=sock.recv(8192);        # Receive the RSP
-RSP=json.loads(str);        # Parse JSON to Python list
-print (RSP);                # Print the RSP
+sock.send(json.dumps(REQ)) # Convert REQ to JSON and send on socket
+str=sock.recv(8192)        # Receive the RSP
+
+RSP=json.loads(str)        # Parse JSON to Python list
+print("received <{}>".format(RSP))                # Print the RSP
 
 # Use SOCAT utitiltiy to connect to TCP RX Data Socket
 # save data to a new file 'rx.out'.
-os.system("socat -u TCP:localhost:%d CREATE:rx.out &"%(RX_PORT))
+#os.system("socat -u TCP:localhost:%d CREATE:rx.out &"%(RX_PORT))
 

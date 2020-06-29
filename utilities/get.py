@@ -14,4 +14,4 @@ REQ=['get',''];
 sock.send(json.dumps(REQ));
 str=sock.recv(8192);
 RSP=json.loads(str);
-print (RSP[1]);
+print (json.dumps(RSP[1], indent=2))

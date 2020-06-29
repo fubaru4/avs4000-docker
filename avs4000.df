@@ -6,35 +6,50 @@ ENV TZ=America/New_York
 USER root
 
 
+#
+# INSTALL support packages
+#    Pull in all of the base software I need for the daemon
+#
 RUN apt-get update && \
-    apt-get -y install wget 
+    apt-get -y install apt-utils
 
-RUN apt-get -y install gnupg gnupg2
+RUN apt-get -y install \
+    wget \
+    gnupg \
+    gnupg2 \
+    usbutils \
+    pciutils \
+    socat \
+    vim \
+    vim-gtk \
+    xterm \
+    net-tools
 
-RUN wget -O - http://repo.avid-systems.com/site.gpg.key | apt-key add -
-
-RUN echo "deb [arch=amd64] http://repo.avid-systems.com/ bionic main" >> /etc/apt/sources.list
-
-RUN apt-get update && apt-get install -y avs4000 gr-avs4000
-
-RUN apt-get -y install apt-utils
-
-RUN apt-get -y install usbutils pciutils
-
-RUN apt-get -y remove avs4000 libavs4000
-
-RUN apt-get update
-
-RUN apt-get -y install avs4000
-
-RUN apt-get -y install socat
-
-RUN apt-get -y install vim vim-gtk
-
-COPY utilities utilities/
-
+#
+# INSTALL timezone
+#
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-RUN apt-get -y install xterm
+#
+# INSTALL AVID packaging key
+#
+RUN wget -O - http://repo.avid-systems.com/site.gpg.key | apt-key add -
+
+#
+# INTALL AVID repository
+#
+RUN echo "deb [arch=amd64] http://repo.avid-systems.com/ bionic main" >> /etc/apt/sources.list
+
+#
+# INSTALL AVS4000 software
+#
+RUN apt-get update && \
+    apt-get install -y avs4000 gr-avs4000
+
+
+#
+# INSTALL Utilities
+#
+COPY utilities utilities/
 
 CMD /bin/bash
